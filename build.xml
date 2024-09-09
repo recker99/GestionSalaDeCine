@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="ExamenSalaCine" default="default" basedir=".">
+    <description>Builds, tests, and runs the project ExamenSalaCine.</description>
+
+    <property name="build.dir" value="build"/>
+    <property name="src.dir" value="src"/>
+    <property name="test.src.dir" value="test"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="classpath" value="${build.dir}/classes:${build.dir}/test-classes"/>
+    
+    <path id="test.classpath">
+        <pathelement location="${build.dir}/classes"/>
+        <pathelement location="${build.dir}/test-classes"/>
+        <!-- Add JUnit jar to classpath -->
+        <pathelement location="path/to/junit.jar"/>
+    </path>
+
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Define target for compiling test classes -->
+    <target name="compile-tests" depends="compile">
+        <mkdir dir="${build.dir}/test-classes"/>
+        <javac srcdir="${test.src.dir}" destdir="${build.dir}/test-classes" classpathref="test.classpath"/>
+    </target>
+
+    <!-- Define target for running tests -->
+    <target name="test" depends="compile-tests">
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement location="${build.dir}/classes"/>
+                <pathelement location="${build.dir}/test-classes"/>
+                <!-- Add JUnit jar to classpath -->
+                <pathelement location="path/to/junit.jar"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="${build.dir}/test-reports">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <!-- Default target -->
+    <target name="default" depends="clean, compile, test, jar">
+        <echo message="Build and tests complete"/>
+    </target>
+
+    <!-- Other targets can be added as needed -->
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>
